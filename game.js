@@ -40,7 +40,9 @@ function create(){
   player.body.collideWorldBounds = true;
 
   player.animations.add('idle', ['idle1.png','idle2.png','idle3.png']);
-  player.animations.add('walking', ['walking1.png','walking2.png','walking3.png','walking4.png','walking5.png']);
+  player.animations.add('forward', ['walking1.png','walking2.png','walking3.png','walking4.png','walking5.png']);
+  player.animations.add('backward', ['walking5.png','walking4.png','walking3.png','walking2.png','walking1.png']);
+  player.animations.add('jump', ['jump1.png','jump2.png','jump3.png','jump4.png','jump5.png','jump6.png']);
 
   cursors = game.input.keyboard.createCursorKeys();
 
@@ -53,25 +55,23 @@ function update(){
   if (cursors.right.isDown)
   {
     player.body.velocity.x = 80;
-    player.animations.play('walking', 6, true);
+    player.animations.play('forward', 6, true);
   }
   else if(cursors.left.isDown)
   {
     player.body.velocity.x = -80;
-    player.animations.play('walking', 6, true);
-  }
-  else
+    player.animations.play('backward', 6, true);
+  } else if(cursors.up.isDown)
   {
-    player.body.velocity.x = 0;
-    player.animations.play('idle', 6, true);
-  }
-
-  if(cursors.up.isDown)
-  {
-
+    player.body.velocity.y = -80;
+    player.animations.play('jump', 6);
   }
   else if(cursors.down.isDown)
   {
 
+  } else
+  {
+    player.body.velocity.x = 0;
+    player.animations.play('idle', 6, true);
   }
 }
