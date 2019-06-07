@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":94},
 	"sourceSize": {"w":40,"h":94}
 },
-"lpunch1.png":
+"light-punch1.png":
 {
 	"frame": {"x":102,"y":261,"w":54,"h":82},
 	"rotated": false,
@@ -96,7 +96,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":54,"h":82},
 	"sourceSize": {"w":54,"h":82}
 },
-"lpunch2.png":
+"light-punch2.png":
 {
 	"frame": {"x":156,"y":261,"w":67,"h":82},
 	"rotated": false,
@@ -104,7 +104,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":67,"h":82},
 	"sourceSize": {"w":67,"h":82}
 },
-"lpunch3.png":
+"light-punch3.png":
 {
 	"frame": {"x":48,"y":261,"w":54,"h":82},
 	"rotated": false,
@@ -159,6 +159,6 @@
 	"format": "RGBA8888",
 	"size": {"w":228,"h":345},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:60aabc9840742d72d0e9f0f48235982f:050e10e3ae5a5ea86c94e05279a6d969:cbce6b53f0f49e0bf15173c25c41f876$"
+	"smartupdate": "$TexturePacker:SmartUpdate:41195a505c834dd65546e3c70d3afa48:050e10e3ae5a5ea86c94e05279a6d969:cbce6b53f0f49e0bf15173c25c41f876$"
 }
 }
