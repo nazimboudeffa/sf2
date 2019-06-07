@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":94},
 	"sourceSize": {"w":40,"h":94}
 },
-"lpuch1.png":
+"lpunch1.png":
 {
 	"frame": {"x":102,"y":261,"w":54,"h":82},
 	"rotated": false,
@@ -96,7 +96,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":54,"h":82},
 	"sourceSize": {"w":54,"h":82}
 },
-"lpuch2.png":
+"lpunch2.png":
 {
 	"frame": {"x":156,"y":261,"w":67,"h":82},
 	"rotated": false,
@@ -104,7 +104,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":67,"h":82},
 	"sourceSize": {"w":67,"h":82}
 },
-"lpuch3.png":
+"lpunch3.png":
 {
 	"frame": {"x":48,"y":261,"w":54,"h":82},
 	"rotated": false,

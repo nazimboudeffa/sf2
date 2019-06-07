@@ -3,8 +3,13 @@ var game = new Phaser.Game(512, 224, Phaser.AUTO, 'game', { init: init, preload:
 var player
 var ground
 var cursors
+var pad1
 var lpunchKey
 var jumpTime = 0
+var crouchTime = 0
+var attacking = false
+var idle = true
+var jumping = false
 var isCrouch = false, isIDLE = true;
 
 function init(){
@@ -45,10 +50,10 @@ function create(){
   player.animations.add('idle', ['idle1.png','idle2.png','idle3.png']);
   player.animations.add('forward', ['walking1.png','walking2.png','walking3.png','walking4.png','walking5.png']);
   player.animations.add('backward', ['walking5.png','walking4.png','walking3.png','walking2.png','walking1.png']);
-  player.animations.add('jump', ['jump1.png','jump2.png','jump3.png','jump4.png','jump5.png','jump6.png']);
-  player.animations.add('crouch', ['crouch1.png','crouch2.png'], false, false);
+  player.animations.add('jump', ['jump2.png','jump3.png','jump4.png','jump3.png','jump2.png']);
+  player.animations.add('crouch', ['crouch1.png','crouch2.png']);
 
-  player.animations.add('lpunch', ['lpunch1.png','lpunch2.png','lpunch3.png'], false, false);
+  player.animations.add('lpunch', ['lpunch1.png','lpunch2.png','lpunch3.png']);
 
   inputsDeclarations();
 
@@ -58,36 +63,88 @@ function update(){
 
   game.physics.arcade.collide(player, ground);
 
-  if (cursors.right.isDown)
-  {
-    player.body.velocity.x = 80;
-    player.animations.play('forward', 6, true);
-  }
-  else if(cursors.left.isDown)
-  {
-    player.body.velocity.x = -80;
-    player.animations.play('backward', 6, true);
-  }
-  else if(cursors.up.isDown && game.time.now > jumpTime)
-  {
-    player.body.velocity.y = -240;
-    player.animations.play('jump', 6);
-    jumpTime = game.time.now + 2000;
-  }
-  else if(cursors.down.isDown && game.time.now > jumpTime)
-  {
-    player.animations.play('crouch', 6);
+  if (!attacking){
+
+    if (cursors.right.isDown && !cursors.down.isDown && !cursors.up.isDown && player.body.touching.down)
+    {
+      idle = false;
+      player.body.velocity.x = +80;
+      player.animations.play('forward', 8).onComplete.add(function(){
+        attacking = false;
+        idle = true;
+      }, this);
+    }
+
+    if(cursors.left.isDown && !cursors.down.isDown && !cursors.up.isDown && player.body.touching.down)
+    {
+      idle = false;
+      player.body.velocity.x = -80;
+      player.animations.play('backward', 8).onComplete.add(function(){
+        attacking = false;
+        idle = true;
+      }, this);
+    }
+
+    if(cursors.down.isDown && game.time.now > crouchTime && player.body.touching.down)
+    {
+      idle = false;
+      player.body.velocity.x = 0;
+      crouchTime = game.time.now + 2000;
+      player.animations.play('crouch', 8, false);
+    }
+
+    if(cursors.up.isDown && game.time.now > jumpTime)
+    {
+        idle = false;
+        player.body.velocity.y = -240;
+        jumpTime = game.time.now + 2000;
+        player.animations.play('jump', 8, false).onComplete.add(function(){
+          attacking = false;
+          jumping = true;
+        }, this);
+    }
+
+  }//not attacking
+
+  if (idle) {
+    player.animations.play('idle', 8, true);
     player.body.velocity.x = 0;
   }
-  else if (lightPunch.isDown)
-  {
-    player.animations.play('lpunch', 6);
+
+  if (player.body.touching.down ) {
+    if (jumping == true) {
+      jumping = false;
+      player.animations.play('idle', 8, true);
+      player.body.velocity.x = 0;
+    }
   }
-  else
-  {
-    player.body.velocity.x = 0;
-    player.animations.play('idle', 6);
-  }
+
+  if (lightPunch.isDown)
+    if (!cursors.right.isDown && !cursors.left.isDown)
+    {
+      idle = false;
+      attacking = true;
+      player.body.velocity.x = 0;
+      player.animations.play('lpunch', 8).onComplete.add(function(){
+        attacking = false;
+        idle = true;
+      }, this);
+    } else if (cursors.right.isDow){
+      idle = false;
+      player.body.velocity.x = +80;
+      player.animations.play('forward', 8).onComplete.add(function(){
+        attacking = false;
+        idle = true;
+      }, this);
+    } else if (cursors.left.isDown){
+      idle = false;
+      player.body.velocity.x = -80;
+      player.animations.play('backward', 8).onComplete.add(function(){
+        attacking = false;
+        idle = true;
+      }, this);
+    }
+
 }
 
 function inputsDeclarations() {
