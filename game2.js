@@ -67,7 +67,7 @@ function update(){
   game.physics.arcade.collide(player, ground);
 
   if (!attacking){
-
+/*
     if (cursors.right.isDown && !cursors.down.isDown && !cursors.up.isDown && player.body.touching.down)
     {
       idle = false;
@@ -95,6 +95,20 @@ function update(){
       crouchTime = game.time.now + 2000;
       player.animations.play('crouch', 8, false);
     }
+*/
+    if (cursors.right.isDown){
+      player.body.velocity.x = +80;
+    } else if (cursors.left.isDown) {
+      player.body.velocity.x = -80;
+    } else {
+      player.body.velocity.x = 0;
+    }
+
+    if (player.body.velocity.x > 0){
+      player.animations.play('forward', 8)
+    } else if (player.body.velocity.x < 0) {
+      player.animations.play('backward', 8)
+    }
 
     if (player.body.velocity.y > 0) {
       player.animations.play('fall', 8);
@@ -107,14 +121,6 @@ function update(){
   if (idle) {
     player.animations.play('idle', 8, true);
     player.body.velocity.x = 0;
-  }
-
-  if (player.body.touching.down ) {
-    if (jumping == true) {
-      jumping = false;
-      player.animations.play('idle', 8, true);
-      player.body.velocity.x = 0;
-    }
   }
 
   if (lightPunch.isDown)
@@ -148,9 +154,7 @@ function update(){
 function handlePlayerJump(){
   if(cursors.up.isDown && player.body.touching.down)
   {
-    idle = false;
     attacking = false;
-    jumping = true;
     player.body.velocity.y = -240;
   }
 }
