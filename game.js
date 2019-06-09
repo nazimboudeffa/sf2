@@ -1,6 +1,6 @@
 var game = new Phaser.Game(512, 224, Phaser.AUTO, 'game', { init: init, preload: preload, create: create, update: update });
 
-var player, ennemy
+var player, enemy
 var ground
 var cursors
 var pad1
@@ -49,9 +49,9 @@ function create(){
   game.physics.arcade.enable(player);
   player.body.gravity.y = 500;
 
-  ennemy = game.add.sprite(400, 50, 'ryu', 'idle1.png');
-  game.physics.arcade.enable(ennemy);
-  ennemy.body.gravity.y = 500;
+  enemy = game.add.sprite(400, 50, 'ryu', 'idle1.png');
+  game.physics.arcade.enable(enemy);
+  enemy.body.gravity.y = 500;
 
   player.body.collideWorldBounds = true;
 
@@ -64,10 +64,10 @@ function create(){
 
   player.animations.add('light-punch', ['light-punch1.png','light-punch2.png','light-punch3.png']);
 
-  ennemy.animations.add('idle', ['idle1.png','idle2.png','idle3.png','idle4.png']);
+  enemy.animations.add('idle', ['idle1.png','idle2.png','idle3.png','idle4.png']);
 
   inputsDeclarations();
-  ennemy.anchor.setTo(0.5);
+  enemy.anchor.setTo(0.5);
   cursors.up.onDown.add(handlePlayerJump);
 
   createLife();
@@ -76,13 +76,13 @@ function create(){
 function update(){
 
   game.physics.arcade.collide(player, ground);
-  game.physics.arcade.collide(ennemy, ground);
+  game.physics.arcade.collide(enemy, ground);
 
-  if (player.x < ennemy.x){
-    ennemy.scale.setTo(-1, 1);
+  if (player.x < enemy.x){
+    enemy.scale.setTo(-1, 1);
     player.scale.setTo(1, 1);
   } else {
-    ennemy.scale.setTo(1, 1);
+    enemy.scale.setTo(1, 1);
     player.scale.setTo(-1, 1);
   }
 
@@ -128,8 +128,8 @@ function update(){
     player.animations.play('idle', 8, true);
     player.body.velocity.x = 0;
 
-    ennemy.animations.play('idle', 8, true);
-    ennemy.body.velocity.x = 0;
+    enemy.animations.play('idle', 8, true);
+    enemy.body.velocity.x = 0;
   }
 
   if (player.body.touching.down ) {
@@ -150,7 +150,7 @@ function update(){
         attacking = false;
         idle = true;
       }, this);
-      cropLife();
+      if (game.physics.arcade.overlap(player, enemy)) cropLife();
     } else if (cursors.right.isDow){
       idle = false;
       player.body.velocity.x = +80;
