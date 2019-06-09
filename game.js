@@ -11,7 +11,7 @@ var attacking = false
 var idle = true
 var jumping = false
 var isCrouch = false, isIDLE = true;
-var widthLife, totalLife, life
+var lifeTween, life, cropRect
 function init(){
 
   Phaser.Canvas.setImageRenderingCrisp(game.canvas);
@@ -26,8 +26,11 @@ function preload(){
 
   game.load.image('background', 'assets/background.png');
   game.load.image('ground', 'assets/ground.png');
-  game.load.atlas('guile', 'assets/sprites/guile/guile.png', 'assets/sprites/guile/guile.json')
-  game.load.atlas('ryu', 'assets/sprites/ryu/ryu.png', 'assets/sprites/ryu/ryu.json')
+  game.load.atlas('guile', 'assets/sprites/guile/guile.png', 'assets/sprites/guile/guile.json');
+  game.load.atlas('ryu', 'assets/sprites/ryu/ryu.png', 'assets/sprites/ryu/ryu.json');
+
+  game.load.image('lifeBG', 'assets/lifeBG.png');
+  game.load.image('life', 'assets/life.png');
 
 }
 
@@ -182,35 +185,13 @@ function inputsDeclarations() {
 }
 
 function createLife(){
-  var bmd = this.game.add.bitmapData(300, 40);
-  bmd.ctx.beginPath();
-  bmd.ctx.rect(0, 0, 300, 80);
-  bmd.ctx.fillStyle = '#ff0000';
-  bmd.ctx.fill();
-
-  var bglife = this.game.add.sprite(200, 50, bmd);
-  bglife.anchor.set(0.5);
-
-  bmd = this.game.add.bitmapData(280, 30);
-  bmd.ctx.beginPath();
-  bmd.ctx.rect(0, 0, 300, 80);
-  bmd.ctx.fillStyle = '#ffff00';
-  bmd.ctx.fill();
-
-  widthLife = new Phaser.Rectangle(0, 0, bmd.width, bmd.height);
-  totalLife = bmd.width;
-
-  life = this.game.add.sprite(200 - bglife.width/2 + 10, 50, bmd);
-  life.anchor.y = 0.5;
-  life.cropEnabled = true;
-  life.crop(widthLife);
+  lifeBG = game.add.image(50, 50, 'lifeBG');
+  life = game.add.image(53, 53, 'life');
+  cropRect = new Phaser.Rectangle(0, 0, 0, life.height);
 }
 
 function cropLife(){
-  if(widthLife.width <= 0){
-    widthLife.width = totalLife;
-  }
-  else{
-    game.add.tween(widthLife).to( { width: (widthLife.width - (totalLife / 10)) }, 200, Phaser.Easing.Linear.None, true);
-  }
+  lifeTween = game.add.tween(cropRect).to( { width: (life.width - 10) }, 200, Phaser.Easing.Linear.None, true);
+  lifeTween.onComplete.add(()=>{life.crop(cropRect)});
+  lifeTween.start();
 }
